@@ -80,13 +80,24 @@ For example you can inspect `plotting.py` and run it `ipython -i plotting.py`.
 It will produce two plots showing the distribution and the efficiency of reconstructed quantities with respect to the generated ones.
 
 Use this file as an example and produce:
-* pulls split by decay mode
-* efficiency and fake rates for different isolation working points
-* ROC curves
+1. pulls split by decay mode
+2. efficiency and fake rates for different isolation working points
+  1. as a function of pt
+  2. as a function of number of vertices
+3. ROC curves
+4. 2D table gen vs reco decay mode (a.k.a. decay mode migration matrix)
 
+## Vary tau reconstruction parameters and observe their effect on the higher level observables
+After the first spin, try now to play with the tau reconstruction!  
 
+We suggest a number of parameters you can play with:
+* remove 2prong and 3-prong + pi0 decay modes
+* relax and/or tighten the intermediate resonance mass cuts
+* vary the signal cone size
+* increase the pt requirements for a strip to be identified as a pi0
 
+For each of them, which effect do you expect to see? Rerun the reconstruction, ntuplisation and plotting and test it!
 
-
+FIXME! add instructions on how to rerun, factorise the cfg
 
 
