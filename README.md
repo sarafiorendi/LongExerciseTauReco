@@ -98,6 +98,7 @@ We suggest a number of parameters you can play with:
 
 For each of them, which effect do you expect to see? Rerun the reconstruction, ntuplisation and plotting and test it!
 
-FIXME! add instructions on how to rerun, factorise the cfg
+In this example `customise_tau_reco_miniaod_cfg.py` you can see how to change the isolation cone size. Run it with `cmsRun customise_tau_reco_miniaod_cfg.py`
 
-
+Full example to answer all questions can be found here (don't peek before you tried yourself)
+https://gist.github.com/rmanzoni/26f8d4eb09bd8e103b421b5156fc1f17
