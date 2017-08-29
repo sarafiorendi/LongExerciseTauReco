@@ -73,6 +73,17 @@ inspect your two ntuples with ROOT's TBrowser: you'll notice that there are only
 
 Try to go through the code again, understand how to add more information to the trees and add the isolation discriminators.
 
+# Plotting
+Once you have produced the flat ntuples, you can now easily perform studies and produce plots out of them.  
+
+For example you can inspect `plotting.py` and run it `ipython -i plotting.py`.  
+It will produce two plots showing the distribution and the efficiency of reconstructed quantities with respect to the generated ones.
+
+Use this file as an example and produce:
+* pulls split by decay mode
+* efficiency and fake rates for different isolation working points
+* ROC curves
+
 
 
 
