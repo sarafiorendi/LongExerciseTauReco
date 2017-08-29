@@ -2,8 +2,8 @@
 
 ```
 # setup the CMSSW release
-cmsrel CMSSW_9_2_10
-cd CMSSW_9_2_10/src
+cmsrel CMSSW_9_2_7
+cd CMSSW_9_2_7/src
 cmsenv
 
 # checkout the necessary packages
