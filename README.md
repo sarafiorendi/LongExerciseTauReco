@@ -73,7 +73,7 @@ inspect your two ntuples with ROOT's TBrowser: you'll notice that there are only
 
 Try to go through the code again, understand how to add more information to the trees and add the isolation discriminators.
 
-# Plotting
+## Plotting
 Once you have produced the flat ntuples, you can now easily perform studies and produce plots out of them.  
 
 For example you can inspect `plotting.py` and run it `ipython -i plotting.py`.  
