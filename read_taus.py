@@ -39,6 +39,10 @@ totevents = events.size() # total number of events in the files
 label_taus  = ('patTaus', '', 'TAURECO')
 handle_taus = Handle('std::vector<pat::Tau>')
 
+# PAT jets
+label_jets = ('slimmedJets', '', 'PAT')
+handle_jets = Handle('std::vector<pat::Jet>')
+
 # gen particles
 label_gen  = ('prunedGenParticles', '', 'PAT')
 handle_gen = Handle('std::vector<reco::GenParticle>')
@@ -75,6 +79,14 @@ for i, ev in enumerate(events):
     taus = [tau for tau in taus if tau.pt()>18.]
 
     ######################################################################################
+    # access the jets
+    ev.getByLabel(label_jets, handle_jets)
+    jets = handle_jets.product()
+
+    # loosely filter jets
+    jets = [jet for jet in jets if jet.pt()>18. and abs(jet.eta())<2.5]
+
+    ######################################################################################
     # access the vertices
     ev.getByLabel(label_vtx, handle_vtx)
     vertices = handle_vtx.product()
@@ -109,6 +121,21 @@ for i, ev in enumerate(events):
         tt.gen_tau = bestmatch
         bestmatch.reco_tau = tt
         gen_taus_copy = [gg for gg in gen_taus_copy if gg != bestmatch]
+
+    ######################################################################################
+    # match reco taus to reco jets
+    for tt in taus : tt.jet = None # first initialise the matching to None
+
+    jets_copy = jets # we'll cyclically remove any jet that gets matched
+
+    for tt in taus:
+        matches = [jj for jj in jets_copy if deltaR(tt.p4(), jj.p4())<0.3]
+        if not len(matches):
+            continue
+        matches.sort(key = lambda jj : deltaR(tt.p4(), jj.p4()))
+        bestmatch = matches[0]
+        tt.jet = bestmatch
+        jets_copy = [jj for jj in jets_copy if jj != bestmatch]
 
     ######################################################################################
     # fill histograms
@@ -167,6 +194,12 @@ for i, ev in enumerate(events):
             tofill_reco['tau_gen_vis_pt'    ] = tt.gen_tau.vispt()
             tofill_reco['tau_gen_vis_eta'   ] = tt.gen_tau.viseta()
             tofill_reco['tau_gen_vis_phi'   ] = tt.gen_tau.visphi()
+        if hasattr(tt, 'jet') and tt.jet:
+            tofill_reco['tau_jet_mass'   ] = tt.jet.mass()
+            tofill_reco['tau_jet_pt'     ] = tt.jet.pt()
+            tofill_reco['tau_jet_eta'    ] = tt.jet.eta()
+            tofill_reco['tau_jet_phi'    ] = tt.jet.phi()
+            tofill_reco['tau_jet_charge' ] = tt.jet.charge()
         ntuple_reco.Fill(array('f',tofill_reco.values()))
 
     ######################################################################################
