@@ -102,3 +102,6 @@ In this example `customise_tau_reco_miniaod_cfg.py` you can see how to change th
 
 Full example to answer all questions can be found here (don't peek before you tried yourself)
 https://gist.github.com/rmanzoni/26f8d4eb09bd8e103b421b5156fc1f17
+
+## Tips & Tricks
+Let the job run even ifthe session is closed: https://en.wikipedia.org/wiki/Nohup
