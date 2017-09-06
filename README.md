@@ -108,4 +108,4 @@ https://gist.github.com/rmanzoni/26f8d4eb09bd8e103b421b5156fc1f17
 * change file name and run! https://gist.github.com/rmanzoni/3fb37a61e4b74b55b6e948ecd0fb36b4
 * reco decay mode logic: `decayMode = 5*(n_ch-1) + n_pi0`
    * e.g.: 1-prong + 1pi0 ==> `5*(1-1) + 1 = 1`
-
+* generated decay mode: https://github.com/cms-sw/cmssw/blob/master/PhysicsTools/Heppy/python/physicsutils/TauDecayModes.py#L44-L46
