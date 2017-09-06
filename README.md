@@ -95,6 +95,7 @@ We suggest a number of parameters you can play with:
 * relax and/or tighten the intermediate resonance mass cuts
 * vary the signal cone size
 * increase the pt requirements for a strip to be identified as a pi0
+* change track quality requirements (e.g. number of hits)
 
 For each of them, which effect do you expect to see? Rerun the reconstruction, ntuplisation and plotting and test it!
 
