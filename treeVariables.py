@@ -23,9 +23,9 @@ branches = [
     'tau_gen_vis_pt',
     'tau_gen_vis_eta',
     'tau_gen_vis_phi',
-    'tau_jet_mass',
-    'tau_jet_pt',
-    'tau_jet_eta',
-    'tau_jet_phi',
-    'tau_jet_charge'
+    'jet_mass',
+    'jet_pt',
+    'jet_eta',
+    'jet_phi',
+    'jet_charge'
 ]

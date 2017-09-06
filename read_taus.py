@@ -124,18 +124,18 @@ for i, ev in enumerate(events):
 
     ######################################################################################
     # match reco taus to reco jets
-    for tt in taus : tt.jet = None # first initialise the matching to None
+    for jj in jets : jj.tau = None # first initialise the matching to None
 
-    jets_copy = jets # we'll cyclically remove any jet that gets matched
+    taus_copy = taus # we'll cyclically remove any tau that gets matched
 
-    for tt in taus:
-        matches = [jj for jj in jets_copy if deltaR(tt.p4(), jj.p4())<0.3]
+    for jj in jets:
+        matches = [tt for tt in taus_copy if deltaR(jj.p4(), tt.p4())<0.3]
         if not len(matches):
             continue
-        matches.sort(key = lambda jj : deltaR(tt.p4(), jj.p4()))
+        matches.sort(key = lambda tt : deltaR(jj.p4(), tt.p4()))
         bestmatch = matches[0]
-        tt.jet = bestmatch
-        jets_copy = [jj for jj in jets_copy if jj != bestmatch]
+        jj.tau = bestmatch
+        taus_copy = [tt for tt in taus_copy if tt != bestmatch]
 
     ######################################################################################
     # fill histograms
@@ -172,34 +172,34 @@ for i, ev in enumerate(events):
         ntuple_gen.Fill(array('f',tofill_gen.values()))
 
     # fill the ntuple: each gen tau makes an entry
-    for tt in taus:
+    for jj in jets:
         for k, v in tofill_reco.iteritems(): tofill_reco[k] = -99. # initialise before filling
-        tofill_reco['run'               ] = ev.eventAuxiliary().run()
-        tofill_reco['lumi'              ] = ev.eventAuxiliary().luminosityBlock()
-        tofill_reco['event'             ] = ev.eventAuxiliary().event()
-        tofill_reco['nvtx'              ] = vertices.size()
-        tofill_reco['tau_reco_mass'     ] = tt.mass()
-        tofill_reco['tau_reco_pt'       ] = tt.pt()
-        tofill_reco['tau_reco_eta'      ] = tt.eta()
-        tofill_reco['tau_reco_phi'      ] = tt.phi()
-        tofill_reco['tau_reco_charge'   ] = tt.charge()
-        tofill_reco['tau_reco_decaymode'] = tt.decayMode()
-        if hasattr(tt, 'gen_tau') and tt.gen_tau:
-            tofill_reco['tau_gen_pt'        ] = tt.gen_tau.pt()
-            tofill_reco['tau_gen_eta'       ] = tt.gen_tau.eta()
-            tofill_reco['tau_gen_phi'       ] = tt.gen_tau.phi()
-            tofill_reco['tau_gen_charge'    ] = tt.gen_tau.charge()
-            tofill_reco['tau_gen_decaymode' ] = tt.gen_tau.decayMode
-            tofill_reco['tau_gen_vis_mass'  ] = tt.gen_tau.vismass()
-            tofill_reco['tau_gen_vis_pt'    ] = tt.gen_tau.vispt()
-            tofill_reco['tau_gen_vis_eta'   ] = tt.gen_tau.viseta()
-            tofill_reco['tau_gen_vis_phi'   ] = tt.gen_tau.visphi()
-        if hasattr(tt, 'jet') and tt.jet:
-            tofill_reco['tau_jet_mass'   ] = tt.jet.mass()
-            tofill_reco['tau_jet_pt'     ] = tt.jet.pt()
-            tofill_reco['tau_jet_eta'    ] = tt.jet.eta()
-            tofill_reco['tau_jet_phi'    ] = tt.jet.phi()
-            tofill_reco['tau_jet_charge' ] = tt.jet.charge()
+        tofill_reco['run'        ] = ev.eventAuxiliary().run()
+        tofill_reco['lumi'       ] = ev.eventAuxiliary().luminosityBlock()
+        tofill_reco['event'      ] = ev.eventAuxiliary().event()
+        tofill_reco['nvtx'       ] = vertices.size()
+        tofill_reco['jet_mass'   ] = jet.mass()
+        tofill_reco['jet_pt'     ] = jet.pt()
+        tofill_reco['jet_eta'    ] = jet.eta()
+        tofill_reco['jet_phi'    ] = jet.phi()
+        tofill_reco['jet_charge' ] = jet.charge()
+        if hasattr(jj, 'tau') and jj.tau:
+            tofill_reco['tau_reco_mass'     ] = jj.tau.mass()
+            tofill_reco['tau_reco_pt'       ] = jj.tau.pt()
+            tofill_reco['tau_reco_eta'      ] = jj.tau.eta()
+            tofill_reco['tau_reco_phi'      ] = jj.tau.phi()
+            tofill_reco['tau_reco_charge'   ] = jj.tau.charge()
+            tofill_reco['tau_reco_decaymode'] = jj.tau.decayMode()
+            if hasattr(jj.tau, 'gen_tau') and jj.tau.gen_tau:
+                tofill_gen['tau_gen_pt'        ] = jj.tau.gen_tau.pt()
+                tofill_gen['tau_gen_eta'       ] = jj.tau.gen_tau.eta()
+                tofill_gen['tau_gen_phi'       ] = jj.tau.gen_tau.phi()
+                tofill_gen['tau_gen_charge'    ] = jj.tau.gen_tau.charge()
+                tofill_gen['tau_gen_decaymode' ] = jj.tau.gen_tau.decayMode
+                tofill_gen['tau_gen_vis_mass'  ] = jj.tau.gen_tau.vismass()
+                tofill_gen['tau_gen_vis_pt'    ] = jj.tau.gen_tau.vispt()
+                tofill_gen['tau_gen_vis_eta'   ] = jj.tau.gen_tau.viseta()
+                tofill_gen['tau_gen_vis_phi'   ] = jj.tau.gen_tau.visphi()
         ntuple_reco.Fill(array('f',tofill_reco.values()))
 
     ######################################################################################
