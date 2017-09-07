@@ -112,3 +112,25 @@ https://gist.github.com/rmanzoni/26f8d4eb09bd8e103b421b5156fc1f17
 * generated decay mode: https://github.com/cms-sw/cmssw/blob/master/PhysicsTools/Heppy/python/physicsutils/TauDecayModes.py#L44-L46
 * python debugger: https://docs.python.org/2/library/pdb.html
    * insert this line `import pdb; pdb.set_trace()` at the exact point you want to pause the script execution and interactively inspect the code
+
+## Save the results!
+
+Please save your plots at this location
+`/home/common/LongExercises/Tau/TauRECO/results`
+
+In order to keep things tidy, please organise into different subdirectories, e.g.:
+`/home/common/LongExercises/Tau/TauRECO/results/nominal_reco`
+
+Perhaps it is not needed, but please set the unix permissions to 777, so taht anybody can do anything and all of us have access to the results
+`chmod 777 YOUR_DIR`
+
+As for the format, `pdf` is fine but root histograms saved into a root file would be better for when we'll produce the final plots for the presentation.
+
+Here an example
+```
+outfile = ROOT.TFile.Open('myresults.root', 'recreate')
+outfile.cd()
+myhistogram.Write()
+outfile.Close()
+```
+
