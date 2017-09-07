@@ -13,7 +13,7 @@ process.maxEvents = cms.untracked.PSet(
 )
 
 # change the isolation cone
-process.combinatoricRecoTaus.isolationConeSize = cms.double(0.8) # originally 0.5
+process.combinatoricRecoTaus.builders[0].isolationConeSize = cms.double(0.8) # originally 0.5
 
 # change the output file name, don't overwrite the original file!
 process.output.fileName = cms.untracked.string('outputFULL_isoCone0p8.root')
