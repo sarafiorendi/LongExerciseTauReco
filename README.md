@@ -133,4 +133,15 @@ outfile.cd()
 myhistogram.Write()
 outfile.Close()
 ```
+### Generate all plots and save them to a rootfile with one script
+
+Use the script `/home/common/LongExercises/Tau/TauRECO/results/nominal_reco/plotting_to_root.py` to generate the relevant plots and dump them to a root file.
+
+Lines you need to change before execution:
+* The filenames of your tau_tuples (sim for the signal, reco for the signal)
+* The output filename and directory corresponding to your task
+
+Copy the rootfile then to the results directory corresponding to your task.
+Please also make a small file there noting which iso discriminant you used and copy your custom config script so is is clear which parameters you changed.
+
 
