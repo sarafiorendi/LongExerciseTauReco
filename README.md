@@ -49,7 +49,7 @@ The main piece of code is `read_taus.py`. We encourage you to go through it befo
 
 The basic idea is to run over the sample you produced, operate the geometrical matching between reco and generator-level taus and fill *two* flat ROOT trees:
 * one with an entry for each generated hadronic tau
-* one with an entry for each reconstructed hadronic tau
+* one with an entry for each reconstructed jet (used as a seed to the tau reconstruction)
 
 ```
 # clone the present package
