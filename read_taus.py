@@ -36,20 +36,17 @@ totevents = events.size() # total number of events in the files
 # edmDumpEventContent outputFULL.root
 
 # PAT taus
-label_taus  = ('patTaus', '', 'TAURECO')
+label_taus = ('selectedPatTaus', '', 'TAURECO')
 handle_taus = Handle('std::vector<pat::Tau>')
-
 # PAT jets
-label_jets = ('slimmedJets', '', 'PAT')
+label_jets = ('slimmedJets', '', 'RECO')
 handle_jets = Handle('std::vector<pat::Jet>')
-
 # gen particles
-label_gen  = ('prunedGenParticles', '', 'PAT')
+label_gen  = ('prunedGenParticles', '', 'RECO')
 handle_gen = Handle('std::vector<reco::GenParticle>')
-
 # vertices
 handle_vtx = Handle('std::vector<reco::Vertex>')
-label_vtx  = ('offlineSlimmedPrimaryVertices','','PAT')
+label_vtx  = ('offlineSlimmedPrimaryVertices','','RECO')
 
 ##########################################################################################
 # example histogram
