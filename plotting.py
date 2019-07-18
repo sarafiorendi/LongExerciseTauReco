@@ -4,9 +4,14 @@ Example to reade the ntuples and produce plots
 
 import ROOT
 import numpy as np
+import sys
+
+if len(sys.argv)==1:
+    print "Please select ZTT or QCD as input!"
+    sys.exit()
 
 # open the input file and get the tree 
-infile = ROOT.TFile.Open('tau_gen_tuple.root', 'read')
+infile = ROOT.TFile.Open('tau_gentau_tuple_{}.root'.format(sys.argv[1]), 'read')
 infile.cd()
 tree = infile.Get('tree')
 
@@ -21,7 +26,8 @@ histo_pull.GetYaxis().SetTitle('counts')
 tree.Draw('(tau_reco_pt - tau_gen_vis_pt)/tau_gen_vis_pt >> pull', 'tau_gen_vis_pt>15 & tau_reco_pt>0')
 
 # save the current pad in pdf format
-ROOT.gPad.SaveAs('pull.pdf')
+ROOT.gPad.SaveAs('pull_{}.pdf'.format(sys.argv[1]))
+ROOT.gPad.SaveAs('pull_{}.png'.format(sys.argv[1]))
 
 
 # efficiency example using TEfficiency https://root.cern.ch/doc/master/classTEfficiency.html
@@ -41,4 +47,5 @@ eff.SetMarkerStyle(8)
 eff.Draw('APL')
 
 # save the current pad in pdf format
-ROOT.gPad.SaveAs('reco_efficiency.pdf')
+ROOT.gPad.SaveAs('reco_efficiency_{}.pdf'.format(sys.argv[1]))
+ROOT.gPad.SaveAs('reco_efficiency_{}.png'.format(sys.argv[1]))

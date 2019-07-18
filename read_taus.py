@@ -12,20 +12,25 @@ from PhysicsTools.HeppyCore.utils.deltar import deltaR, deltaPhi
 from PhysicsTools.Heppy.physicsutils.TauDecayModes import tauDecayModes
 from treeVariables import branches # here the ntuple branches are defined
 from utils import isGenHadTau, finalDaughters, printer # utility functions
+import sys
+
+if len(sys.argv)==1:
+    print "Please select ZTT or QCD as input!"
+    sys.exit()
 
 ##########################################################################################
 # initialise output files to save the flat ntuples
-outfile_gen = ROOT.TFile('tau_gen_tuple.root', 'recreate')
+outfile_gen = ROOT.TFile('tau_gentau_tuple_{}.root'.format(sys.argv[1]), 'recreate')
 ntuple_gen = ROOT.TNtuple('tree', 'tree', ':'.join(branches))
 tofill_gen = OrderedDict(zip(branches, [-99.]*len(branches))) # initialise all branches to unphysical -99       
 
-outfile_reco = ROOT.TFile('tau_reco_tuple.root', 'recreate')
-ntuple_reco = ROOT.TNtuple('tree', 'tree', ':'.join(branches))
-tofill_reco = OrderedDict(zip(branches, [-99.]*len(branches))) # initialise all branches to unphysical -99       
+outfile_jet = ROOT.TFile('tau_jet_tuple_{}.root'.format(sys.argv[1]), 'recreate')
+ntuple_jet = ROOT.TNtuple('tree', 'tree', ':'.join(branches))
+tofill_jet = OrderedDict(zip(branches, [-99.]*len(branches))) # initialise all branches to unphysical -99       
 
 ##########################################################################################
 # Get ahold of the events
-events = Events('outputFULL.root') # make sure this corresponds to your file name!
+events = Events('miniAOD_TauReco_ak4PFJets_{}.root'.format(sys.argv[1])) # make sure this corresponds to your file name!
 maxevents = -1 # max events to process
 totevents = events.size() # total number of events in the files
 
@@ -39,14 +44,14 @@ totevents = events.size() # total number of events in the files
 label_taus = ('selectedPatTaus', '', 'TAURECO')
 handle_taus = Handle('std::vector<pat::Tau>')
 # PAT jets
-label_jets = ('slimmedJets', '', 'RECO')
+label_jets = ('slimmedJets', '', 'PAT')
 handle_jets = Handle('std::vector<pat::Jet>')
 # gen particles
-label_gen  = ('prunedGenParticles', '', 'RECO')
+label_gen  = ('prunedGenParticles', '', 'PAT')
 handle_gen = Handle('std::vector<reco::GenParticle>')
 # vertices
 handle_vtx = Handle('std::vector<reco::Vertex>')
-label_vtx  = ('offlineSlimmedPrimaryVertices','','RECO')
+label_vtx  = ('offlineSlimmedPrimaryVertices','','PAT')
 
 ##########################################################################################
 # example histogram
@@ -141,7 +146,6 @@ for i, ev in enumerate(events):
             pull = (gg.reco_tau.pt() - gg.vispt())/gg.vispt()
             histos['pull_pt'].Fill(pull)
     
-
     ######################################################################################
     # fill the ntuple: each gen tau makes an entry
     for gg in gen_taus:
@@ -168,25 +172,25 @@ for i, ev in enumerate(events):
         tofill_gen['tau_gen_vis_phi'   ] = gg.visphi()
         ntuple_gen.Fill(array('f',tofill_gen.values()))
 
-    # fill the ntuple: each gen tau makes an entry
+    # fill the ntuple: each jet makes an entry
     for jj in jets:
-        for k, v in tofill_reco.iteritems(): tofill_reco[k] = -99. # initialise before filling
-        tofill_reco['run'        ] = ev.eventAuxiliary().run()
-        tofill_reco['lumi'       ] = ev.eventAuxiliary().luminosityBlock()
-        tofill_reco['event'      ] = ev.eventAuxiliary().event()
-        tofill_reco['nvtx'       ] = vertices.size()
-        tofill_reco['jet_mass'   ] = jj.mass()
-        tofill_reco['jet_pt'     ] = jj.pt()
-        tofill_reco['jet_eta'    ] = jj.eta()
-        tofill_reco['jet_phi'    ] = jj.phi()
-        tofill_reco['jet_charge' ] = jj.charge()
+        for k, v in tofill_jet.iteritems(): tofill_jet[k] = -99. # initialise before filling
+        tofill_jet['run'        ] = ev.eventAuxiliary().run()
+        tofill_jet['lumi'       ] = ev.eventAuxiliary().luminosityBlock()
+        tofill_jet['event'      ] = ev.eventAuxiliary().event()
+        tofill_jet['nvtx'       ] = vertices.size()
+        tofill_jet['jet_mass'   ] = jj.mass()
+        tofill_jet['jet_pt'     ] = jj.pt()
+        tofill_jet['jet_eta'    ] = jj.eta()
+        tofill_jet['jet_phi'    ] = jj.phi()
+        tofill_jet['jet_charge' ] = jj.charge()
         if hasattr(jj, 'tau') and jj.tau:
-            tofill_reco['tau_reco_mass'     ] = jj.tau.mass()
-            tofill_reco['tau_reco_pt'       ] = jj.tau.pt()
-            tofill_reco['tau_reco_eta'      ] = jj.tau.eta()
-            tofill_reco['tau_reco_phi'      ] = jj.tau.phi()
-            tofill_reco['tau_reco_charge'   ] = jj.tau.charge()
-            tofill_reco['tau_reco_decaymode'] = jj.tau.decayMode()
+            tofill_jet['tau_reco_mass'     ] = jj.tau.mass()
+            tofill_jet['tau_reco_pt'       ] = jj.tau.pt()
+            tofill_jet['tau_reco_eta'      ] = jj.tau.eta()
+            tofill_jet['tau_reco_phi'      ] = jj.tau.phi()
+            tofill_jet['tau_reco_charge'   ] = jj.tau.charge()
+            tofill_jet['tau_reco_decaymode'] = jj.tau.decayMode()
             if hasattr(jj.tau, 'gen_tau') and jj.tau.gen_tau:
                 tofill_gen['tau_gen_pt'        ] = jj.tau.gen_tau.pt()
                 tofill_gen['tau_gen_eta'       ] = jj.tau.gen_tau.eta()
@@ -197,7 +201,7 @@ for i, ev in enumerate(events):
                 tofill_gen['tau_gen_vis_pt'    ] = jj.tau.gen_tau.vispt()
                 tofill_gen['tau_gen_vis_eta'   ] = jj.tau.gen_tau.viseta()
                 tofill_gen['tau_gen_vis_phi'   ] = jj.tau.gen_tau.visphi()
-        ntuple_reco.Fill(array('f',tofill_reco.values()))
+        ntuple_jet.Fill(array('f',tofill_jet.values()))
 
     ######################################################################################
     # printout some info, if you want
@@ -209,6 +213,6 @@ outfile_gen.cd()
 ntuple_gen.Write()
 outfile_gen.Close()
 
-outfile_reco.cd()
-ntuple_reco.Write()
-outfile_reco.Close()
+outfile_jet.cd()
+ntuple_jet.Write()
+outfile_jet.Close()
