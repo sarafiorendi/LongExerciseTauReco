@@ -30,7 +30,7 @@ tofill_jet = OrderedDict(zip(branches, [-99.]*len(branches))) # initialise all b
 
 ##########################################################################################
 # Get ahold of the events
-events = Events('miniAOD_TauReco_ak4PFJets_{}.root'.format(sys.argv[1])) # make sure this corresponds to your file name!
+events = Events('{}_miniAOD_rerunTauRECO.root'.format(sys.argv[1])) # make sure this corresponds to your file name!
 maxevents = -1 # max events to process
 totevents = events.size() # total number of events in the files
 
