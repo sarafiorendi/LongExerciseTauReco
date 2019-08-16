@@ -7,13 +7,38 @@ sys.path.append('..')
 # for example: here
 from rerunTauRecoOnMiniAOD import process
 
+
+runSignal = True
+print sys.argv
+if len(sys.argv)>1:
+    if sys.argv[2] == "QCD":
+        runSignal = False
+
+maxEvents = 200
+
+readFiles = cms.untracked.vstring()
+secFiles = cms.untracked.vstring()
+process.source = cms.Source(
+    "PoolSource", fileNames=readFiles, secondaryFileNames=secFiles)
+
+print('\t Max events:', process.maxEvents.input.value())
+
+if runSignal:
+    readFiles.extend([
+        'file:ZTT_MiniAOD_106X.root' 
+    ])
+else:
+    readFiles.extend([ 
+        'file:QCD_MiniAOD_106X.root'
+    ])
+
 # limit the number of events to be processed
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32( 200 )
+    input = cms.untracked.int32( maxEvents )
 )
 
-# change the isolation cone
-process.combinatoricRecoTaus.builders[0].isolationConeSize = cms.double(0.8) # originally 0.5
+## E.G.: change the isolation cone
+#process.combinatoricRecoTaus.builders[0].isolationConeSize = cms.double(0.8) # originally 0.5
 
 ## E.G.: Remove all decay modes with piZeros
 #process.combinatoricRecoTaus.builders[0].decayModes = [dm for dm in process.combinatoricRecoTaus.builders[0].decayModes if dm.nPiZeros==0]
@@ -239,4 +264,4 @@ process.hpsPFTauDiscriminationByDecayModeFindingNewDMs.decayModes(
 
 
 # change the output file name, don't overwrite the original file!
-process.output.fileName = cms.untracked.string('outputFULL_isoCone0p8.root')
+process.output.fileName = cms.untracked.string('{}_miniAOD_rerunTauRECO.root'.format("ZTT" if runSignal else "QCD"))
