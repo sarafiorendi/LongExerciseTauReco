@@ -13,24 +13,31 @@ from PhysicsTools.Heppy.physicsutils.TauDecayModes import tauDecayModes
 from treeVariables import branches # here the ntuple branches are defined
 from utils import isGenHadTau, finalDaughters, printer # utility functions
 import sys
+import argparse
 
-if len(sys.argv)==1:
-    print "Please select ZTT or QCD as input!"
-    sys.exit()
+parser = argparse.ArgumentParser(
+		    description="Convert MiniAOD to flat ntuples!")
+parser.add_argument(
+	"--file",
+	choices=['ZTT','QCD'],
+	required=True,
+	help='Specify the sample you want to flatten')
+args = parser.parse_args()
+sample = args.file
 
 ##########################################################################################
 # initialise output files to save the flat ntuples
-outfile_gen = ROOT.TFile('tau_gentau_tuple_{}.root'.format(sys.argv[1]), 'recreate')
+outfile_gen = ROOT.TFile('tau_gentau_tuple_{}.root'.format(sample), 'recreate')
 ntuple_gen = ROOT.TNtuple('tree', 'tree', ':'.join(branches))
 tofill_gen = OrderedDict(zip(branches, [-99.]*len(branches))) # initialise all branches to unphysical -99       
 
-outfile_jet = ROOT.TFile('tau_jet_tuple_{}.root'.format(sys.argv[1]), 'recreate')
+outfile_jet = ROOT.TFile('tau_jet_tuple_{}.root'.format(sample), 'recreate')
 ntuple_jet = ROOT.TNtuple('tree', 'tree', ':'.join(branches))
 tofill_jet = OrderedDict(zip(branches, [-99.]*len(branches))) # initialise all branches to unphysical -99       
 
 ##########################################################################################
 # Get ahold of the events
-events = Events('{}_miniAOD_rerunTauRECO.root'.format(sys.argv[1])) # make sure this corresponds to your file name!
+events = Events('{}_miniAOD_rerunTauRECO.root'.format(sample)) # make sure this corresponds to your file name!
 maxevents = -1 # max events to process
 totevents = events.size() # total number of events in the files
 
