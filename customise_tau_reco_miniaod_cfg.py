@@ -7,7 +7,7 @@ sys.path.append('..')
 # for example: here
 from rerunTauRecoOnMiniAOD import process
 
-runSignal = False # Set to False to read in QCD file instead of ZTT
+runSignal = True # Set to False to read in QCD file instead of ZTT
 
 maxEvents = 200
 

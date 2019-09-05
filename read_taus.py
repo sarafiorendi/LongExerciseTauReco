@@ -162,6 +162,9 @@ for i, ev in enumerate(events):
         tofill_gen['event'             ] = ev.eventAuxiliary().event()
         tofill_gen['nvtx'              ] = vertices.size()
         if hasattr(gg, 'reco_tau') and gg.reco_tau:
+            # SOLUTION: Exercise 8
+            tofill_gen['tau_reco_tight_id'     ] = gg.reco_tau.tauID("byTightIsolationMVArun2v1DBoldDMwLT")
+            tofill_gen['tau_reco_loose_id'     ] = gg.reco_tau.tauID("byLooseIsolationMVArun2v1DBoldDMwLT")
             tofill_gen['tau_reco_mass'     ] = gg.reco_tau.mass()
             tofill_gen['tau_reco_pt'       ] = gg.reco_tau.pt()
             tofill_gen['tau_reco_eta'      ] = gg.reco_tau.eta()
@@ -192,6 +195,9 @@ for i, ev in enumerate(events):
         tofill_jet['jet_phi'    ] = jj.phi()
         tofill_jet['jet_charge' ] = jj.charge()
         if hasattr(jj, 'tau') and jj.tau:
+            # SOLUTION: Exercise 8
+            tofill_jet['tau_reco_tight_id'     ] = jj.tau.tauID("byTightIsolationMVArun2v1DBoldDMwLT")
+            tofill_jet['tau_reco_loose_id'     ] = jj.tau.tauID("byLooseIsolationMVArun2v1DBoldDMwLT")
             tofill_jet['tau_reco_mass'     ] = jj.tau.mass()
             tofill_jet['tau_reco_pt'       ] = jj.tau.pt()
             tofill_jet['tau_reco_eta'      ] = jj.tau.eta()

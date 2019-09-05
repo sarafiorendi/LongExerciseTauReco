@@ -23,6 +23,9 @@ branches = [
     'tau_gen_vis_pt',
     'tau_gen_vis_eta',
     'tau_gen_vis_phi',
+    # SOLUTION: Exercise 8
+    'tau_reco_loose_id',
+    'tau_reco_tight_id',
     'jet_mass',
     'jet_pt',
     'jet_eta',
