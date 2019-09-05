@@ -1,147 +1,101 @@
-# Tau Reconstruction exercise @ CMSPOS
-In this exercise you'll see first-hand how the tau reconstruction is run on low level, Particle Flow inputs.  
+### 1. Tau Reco
 
-To make things clearer to follow, you'll run the tau reconstruction on miniAOD samples (instead of the usual RECO/AOD). 
+**Set up code:**
+```bash
+source /cvmfs/grid.cern.ch/emi3ui-latest/etc/profile.d/setup-ui-example.sh
+export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch
+source $VO_CMS_SW_DIR/cmsset_default.sh
 
-In this way the typical turnaround change parameters -> re-run the reconstruction -> investigate the outcome is much faster and will allow you to actually test a few different configurations and see their impact on the relevant quantities, such as efficiency and fake rejection. 
-
-## Installation and setup
-First of all you need to initialise a fresh CMSSW release and install the needed packages.
-
-```
-# setup the CMSSW release
-cmsrel CMSSW_9_2_7
-cd CMSSW_9_2_7/src
+export SCRAM_ARCH=slc7_amd64_gcc700
+cmsrel CMSSW_10_6_1
+cd CMSSW_10_6_1/src
 cmsenv
 
-# checkout the necessary packages
-git-cms-addpkg /DataFormats/PatCandidates/
-git-cms-addpkg /DataFormats/TauReco/
-git-cms-addpkg /PhysicsTools/PatAlgos/
-git-cms-addpkg /RecoTauTag/RecoTau/
+# set up cmssw git repo and check out tau reco package
+git cms-init
+git cms-addpkg RecoTauTag/RecoTau/
 
-# add Jan’s repository
-git remote add jan https://github.com/steggema/cmssw.git
-git fetch jan
+# compile
+scram b -j 8
 
-# create a new branch and make it point to Jan’s
-git checkout CMSSW_9_2_X_TauRecoMiniAOD
-
-# now compile
-scram b -j16
-
-# move to the RecoTau package
+# move to testing area
 cd RecoTauTag/RecoTau/test/
 
-# get the cfg file and run it, this will produce 'outputFULL.root' containing everything from the original files
-# *plus* your new tau collections
-wget https://gist.githubusercontent.com/steggema/f5b65e09ebee723f5f27b1bef53dfa03/raw/05e064b65d0fe4c3aeeb65b028ccbda857b27814/tau_miniaod.py
-voms-proxy-init --voms cms
-cmsRun tau_miniaod.py
+# get code examples
+git clone https://github.com/janekbechtel/TauRecoCMSPOS
 
-# suggestion: check that the output files really contains what you want using edmDumpEventContent
-```
+cp /home/home3/gast/cmspost3/public/TauRECO/*root .
 
-## Produce flat root trees
-Now that you have run the tau reconstruction on the original miniAOD samples and you have produced `outputFULL.root`, you need to produce handy and swift ROOT flat trees to be used afterwards for producing plots and studies.
-
-The main piece of code is `read_taus.py`. We encourage you to go through it before running it, it is thoroughly commented and it is (should be, in case just ask!) self explanatory.
-
-The basic idea is to run over the sample you produced, operate the geometrical matching between reco and generator-level taus and fill *two* flat ROOT trees:
-* one with an entry for each generated hadronic tau
-* one with an entry for each reconstructed jet (used as a seed to the tau reconstruction)
 
 ```
-# clone the present package
-cd $CMSSW_BASE/src/RecoTauTag/RecoTau/test/
-cmsenv
-git clone https://github.com/rmanzoni/TauRecoCMSPOS.git
-cd TauRecoCMSPOS
+**Available Scripts**
+> We advice you to always check the scripts before running them to get a feeling on what to script will actually do
+>  
+***Re-run the tau reconstruction on miniAOD:***
 
-# create a soft link to outputFULL.root (or alternatively move it to your convenience...)
-ln -s ../outputFULL.root
-
-# run the ntupliser! (ipython is not mandatory, but it simply happens to be more useful than the bare python in many contexts)
-ipython -i read_taus.py 
-
-# now you've finally obtained your two flat trees
-tau_gen_tuple.root
-tau_reco_tuple.root
+```bash
+cmsRun TauRecoCMSPOS/customise_tau_reco_miniaod_cfg.py
 ```
+First we rerun the Tau Reconstruction on the provided Samples ( a ZTT Sample and a QCD Sample). During this step, different Parameters of the Tau Reconstruction can be modified, and their impact on e.g. the efficiency of the tau reconstruction can be checked. 
 
-inspect your two ntuples with ROOT's TBrowser: you'll notice that there are only a few basic quantities saved (where is the isolation?!).
+***Ntupelize the output file:***
 
-Try to go through the code again, understand how to add more information to the trees and add the isolation discriminators.
-
-## Plotting
-Once you have produced the flat ntuples, you can now easily perform studies and produce plots out of them.  
-
-For example you can inspect `plotting.py` and run it `ipython -i plotting.py`.  
-It will produce two plots showing the distribution and the efficiency of reconstructed quantities with respect to the generated ones.
-
-Use this file as an example and produce:
-1. pulls split by decay mode
-2. efficiency and fake rates for different isolation working points
-  1. as a function of pt
-  2. as a function of number of vertices
-3. ROC curves
-4. 2D table gen vs reco decay mode (a.k.a. decay mode migration matrix)
-
-## Vary tau reconstruction parameters and observe their effect on the higher level observables
-After the first spin, try now to play with the tau reconstruction!  
-
-We suggest a number of parameters you can play with:
-* remove 2prong and 3-prong + pi0 decay modes
-* relax and/or tighten the intermediate resonance mass cuts
-* vary the signal cone size
-* increase the pt requirements for a strip to be identified as a pi0
-* change track quality requirements (e.g. number of hits)
-
-For each of them, which effect do you expect to see? Rerun the reconstruction, ntuplisation and plotting and test it!
-
-In this example `customise_tau_reco_miniaod_cfg.py` you can see how to change the isolation cone size. Run it with `cmsRun customise_tau_reco_miniaod_cfg.py`
-
-Full example to answer all questions can be found here (don't peek before you tried yourself)
-https://gist.github.com/rmanzoni/26f8d4eb09bd8e103b421b5156fc1f17
-
-## Tips & Tricks
-* Let the job run even ifthe session is closed: https://en.wikipedia.org/wiki/Nohup
-* change file name and run! https://gist.github.com/rmanzoni/3fb37a61e4b74b55b6e948ecd0fb36b4
-* reco decay mode logic: `decayMode = 5*(n_ch-1) + n_pi0`
-   * e.g.: 1-prong + 1pi0 ==> `5*(1-1) + 1 = 1`
-* generated decay mode: https://github.com/cms-sw/cmssw/blob/master/PhysicsTools/Heppy/python/physicsutils/TauDecayModes.py#L44-L46
-* python debugger: https://docs.python.org/2/library/pdb.html
-   * insert this line `import pdb; pdb.set_trace()` at the exact point you want to pause the script execution and interactively inspect the code
-
-## Save the results!
-
-Please save your plots at this location
-`/home/common/LongExercises/Tau/TauRECO/results`
-
-In order to keep things tidy, please organise into different subdirectories, e.g.:
-`/home/common/LongExercises/Tau/TauRECO/results/nominal_reco`
-
-Perhaps it is not needed, but please set the unix permissions to 777, so taht anybody can do anything and all of us have access to the results
-`chmod 777 YOUR_DIR`
-
-As for the format, `pdf` is fine but root histograms saved into a root file would be better for when we'll produce the final plots for the presentation.
-
-Here an example
+```bash
+python TauRecoCMSPOS/read_taus.py --file (ZTT|QCD)
 ```
-outfile = ROOT.TFile.Open('myresults.root', 'recreate')
-outfile.cd()
-myhistogram.Write()
-outfile.Close()
+After the Tau Reconstruction is rerun, you can convert the MiniAOD file to a flat ntuple. These flat ntuples can then be used to plot and calculate various quantities. 
+
+The script will result in two nuples:
+
+1. containing one entry for each generated Tau
+2. containing one entry for each reconstructed Jet
+
+***Plot the efficiency curve and smearing of tau pt:***
+```bash
+python TauRecoCMSPOS/plotting.py  --file (ZTT|QCD)
 ```
-### Generate all plots and save them to a rootfile with one script
+The plotting script is used to generate plots from the flat ntuples.
 
-Use the script `/home/common/LongExercises/Tau/TauRECO/results/nominal_reco/plotting_to_root.py` to generate the relevant plots and dump them to a root file.
 
-Lines you need to change before execution:
-* The filenames of your tau_tuples (sim for the signal, reco for the signal)
-* The output filename and directory corresponding to your task
+**Tasks:**
 
-Copy the rootfile then to the results directory corresponding to your task.
-Please also make a small file there noting which iso discriminant you used and copy your custom config script so is is clear which parameters you changed.
+Perform the following tasks on the miniAOD Z->tau tau sample and the QCD sample provided:
+
+1. Re-run the tau reconstruction on the both samples
+
+2. Ntupelize the two output miniAOD files. Make sure to set the correct input file!
+
+3. Calculate the overall tau reconstuction efficiency using the ZTT sample by applying the following cuts. You can add the calculation in the script `plotting.py`.
+
+    * gen. tau $p_{T} > 18$ GeV
+    *  gen. tau $|\eta| < 2.4$ 
+
+    and calculating $\frac{\text{Reconstructed taus from genuine tau}}{\text{Number genuine taus}}$ (Efficiency)
+
+4. Caclulate the overall misidentification propability using the QCD sample by applying the following cuts. You can add the calculation in the script `plotting.py`. 
+
+    * jet $p_{T} > 18$ GeV
+    * jet $|\eta| < 2.4$
+
+    and calculating $\frac{\text{Reconstructed taus from jet}}{\text{Total jets}}$ (Misidentification probability)
+
+5. Plot the reconstruction efficiency for for genuine taus as a function of the tau $p_{T}$, as well as the smearing of the reconstructed tau $p_{T}$ using `plotting.py`. This is already implemented.
+
+
+6. **Adapt `plotting.py`** to additionally plot the reconstruction efficiency of jets misidentified as tau leptons for the QCD sample.
+
+10. **Adapt `plotting.py`** to plot the distribution of the reconstructed and true decay modes for tau leptons passing the $p_{T}$  and $\eta$ cuts of part 3 in the same plot. Use different colors and a ROOT TLegend to label the two histograms. The variable decay_mode is an integer with `decay mode = 5 * (n_charged - 1) + n_pi0`. The most common decay modes are 0 (1 charged hadron, no pi0), 1 (1 charged hadron, 1 pi0), and 10 (three charged hadrons, no pi0)
+
+12. Read out the tau-isolation discriminator `byLooseIsolationMVArun2v1DBoldDMwLT`. It can be accessed for reconstructed taus by requesting `tau.tauID("name of ID")` when ntupelizing the miniAOD file. 
+
+9. Repeat steps 3.-7., however now only use reconstructed tau leptons passing the isolation discriminator.
+
+10. How did the reconstruction efficiencies and (mainly) the misidentification probability change?
+
+11. *For early finishers only*:
+Use ```TauRecoCMSPOS/customise_tau_reco_miniaod_cfg.py``` to rerun the tau reconstruction using custom settings, and see how it changes the quality of your tau reconstruction. You could change e.g.:
+    * Decay modes to be considered for valid tau leptons
+    * dR isolation cone size
+    * Minimum quality requirements on tracks to be considered 
 
 
