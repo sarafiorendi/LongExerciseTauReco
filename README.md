@@ -34,14 +34,14 @@ cp /home/home3/gast/cmspost3/public/TauRECO/*root .
 ***Re-run the tau reconstruction on miniAOD:***
 
 ```bash
-cmsRun TauRecoCMSPOS/customise_tau_reco_miniaod_cfg.py
+cmsRun LongExerciseTauReco/customise_tau_reco_miniaod_cfg.py
 ```
 First we rerun the Tau Reconstruction on the provided Samples ( a ZTT Sample and a QCD Sample). During this step, different Parameters of the Tau Reconstruction can be modified, and their impact on e.g. the efficiency of the tau reconstruction can be checked. 
 
 ***Ntupelize the output file:***
 
 ```bash
-python TauRecoCMSPOS/read_taus.py --file (ZTT|QCD)
+python LongExerciseTauReco/read_taus.py --file (ZTT|QCD)
 ```
 After the Tau Reconstruction is rerun, you can convert the MiniAOD file to a flat ntuple. These flat ntuples can then be used to plot and calculate various quantities. 
 
@@ -52,7 +52,7 @@ The script will result in two nuples:
 
 ***Plot the efficiency curve and smearing of tau pt:***
 ```bash
-python TauRecoCMSPOS/plotting.py  --file (ZTT|QCD)
+python LongExerciseTauReco/plotting.py  --file (ZTT|QCD)
 ```
 The plotting script is used to generate plots from the flat ntuples.
 
@@ -91,7 +91,7 @@ Perform the following tasks on the miniAOD Z->tau tau sample and the QCD sample 
 10. How did the reconstruction efficiencies and (mainly) the misidentification probability change?
 
 11. *For early finishers only*:
-Use ```TauRecoCMSPOS/customise_tau_reco_miniaod_cfg.py``` to rerun the tau reconstruction using custom settings, and see how it changes the quality of your tau reconstruction. You could change e.g.:
+Use ```LongExerciseTauReco/customise_tau_reco_miniaod_cfg.py``` to rerun the tau reconstruction using custom settings, and see how it changes the quality of your tau reconstruction. You could change e.g.:
     * Decay modes to be considered for valid tau leptons
     * dR isolation cone size
     * Minimum quality requirements on tracks to be considered 
