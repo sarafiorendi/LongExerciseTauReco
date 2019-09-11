@@ -56,7 +56,6 @@ python TauRecoCMSPOS/plotting.py  --file (ZTT|QCD)
 ```
 The plotting script is used to generate plots from the flat ntuples.
 
-
 **Tasks:**
 
 Perform the following tasks on the miniAOD Z->tau tau sample and the QCD sample provided:
@@ -81,7 +80,6 @@ Perform the following tasks on the miniAOD Z->tau tau sample and the QCD sample 
 
 5. Plot the reconstruction efficiency for for genuine taus as a function of the tau $p_{T}$, as well as the smearing of the reconstructed tau $p_{T}$ using `plotting.py`. This is already implemented.
 
-
 6. **Adapt `plotting.py`** to additionally plot the reconstruction efficiency of jets misidentified as tau leptons for the QCD sample.
 
 10. **Adapt `plotting.py`** to plot the distribution of the reconstructed and true decay modes for tau leptons passing the $p_{T}$  and $\eta$ cuts of part 3 in the same plot. Use different colors and a ROOT TLegend to label the two histograms. The variable decay_mode is an integer with `decay mode = 5 * (n_charged - 1) + n_pi0`. The most common decay modes are 0 (1 charged hadron, no pi0), 1 (1 charged hadron, 1 pi0), and 10 (three charged hadrons, no pi0)
@@ -97,5 +95,3 @@ Use ```TauRecoCMSPOS/customise_tau_reco_miniaod_cfg.py``` to rerun the tau recon
     * Decay modes to be considered for valid tau leptons
     * dR isolation cone size
     * Minimum quality requirements on tracks to be considered 
-
-
