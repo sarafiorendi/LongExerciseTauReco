@@ -29,13 +29,22 @@ if sample=="ZTT":
 	passed = 0
 	for i in range(tree.GetEntries()):
 		tree.GetEntry(i)
-		if (tree.tau_gen_vis_pt > 18.0 and abs(tree.tau_gen_eta)<2.4):  # we are only interested in taus with sufficient pT in the central detector region
+		if (tree.tau_gen_vis_pt > 18.0 and abs(tree.tau_gen_vis_eta)<2.4):  # we are only interested in taus with sufficient pT in the central detector region
 			total += 1
 			if tree.tau_reco_pt>0.0: # > 0 means that is exists i.e. has been reconstructed as we initialized the array with -99
 				passed += 1
 	print("{} taus in total.".format(total))
 	print("{} were reconstructed as taus.".format(passed))
 	print("Efficieny = {}".format(round(float(passed)/float(total),4)))
+
+	dm_matrix = np.zeros((3,3))
+	for i,true_dm in enumerate([0,1,10]):
+		for j,reco_dm in enumerate([0,1,10]):
+			dm_matrix[i][j] = tree.GetEntries('tau_reco_decaymode=={} && tau_gen_vis_pt>18 & abs(tau_gen_vis_eta)<2.4 & tau_reco_pt>0 && tau_gen_decaymode=={}'.format(reco_dm,true_dm))
+	print(dm_matrix)
+	dm_matrix = dm_matrix/dm_matrix.sum(axis=0, keepdims=True)
+	print(dm_matrix)
+	
 
 ## SOLUTION
 # Exercise 4: Calculate the overall misidentification rate.
@@ -47,7 +56,7 @@ if sample=="QCD":
 		tree.GetEntry(i)
 		if (tree.jet_pt > 18.0 and abs(tree.jet_eta)<2.4):  # we are only interested in taus with sufficient pT in the central detector region
 			total += 1
-			if tree.tau_reco_pt>0.0: # > 0 means that is exists i.e. has been reconstructed as we initialized the array with -99
+			if tree.tau_reco_pt>0.0 and tree.tau_reco_loose_id>0.5: # > 0 means that is exists i.e. has been reconstructed as we initialized the array with -99
 				passed += 1
 	print("{} jets in total.".format(total))
 	print("{} were reconstructed as taus.".format(passed))
@@ -112,6 +121,10 @@ eff = ROOT.TEfficiency(histo_num, histo_den)
 eff.SetTitle(';Jet p_{T} [GeV]; reconstruction efficiency')
 eff.SetMarkerStyle(8)
 eff.Draw('APL')
+
+print(tree.GetEntries("jet_pt>18 & abs(jet_eta)<2.4"))
+print(tree.GetEntries("jet_pt>18 & abs(jet_eta)<2.4 &  tau_reco_pt>0"))
+
 
 # save the current canvas
 c.SaveAs('jet_efficiency_{}.pdf'.format(sample))
