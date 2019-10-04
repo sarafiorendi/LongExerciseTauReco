@@ -24,8 +24,9 @@ cd RecoTauTag/RecoTau/test/
 # get code examples
 git clone https://github.com/cms-physics-object-school/LongExerciseTauReco
 
-scp lxplus.cern.ch:/afs/cern.ch/work/j/jbechtel/public/CMSPOS_2019/TauRECO/* .
+scp -r lxplus.cern.ch:/afs/cern.ch/work/j/jbechtel/public/CMSPOS_2019/TauRECO .
 
+cp -rs TauRECO/*root .
 
 ```
 **Available Scripts**
