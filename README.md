@@ -42,7 +42,7 @@ First we rerun the Tau Reconstruction on the provided Samples ( a ZTT Sample and
 ***Ntupelize the output file:***
 
 ```bash
-python LongExerciseTauReco/read_taus.py --file (ZTT|QCD)
+python LongExerciseTauReco/read_taus.py --sample (ZTT|QCD) --file 1
 ```
 After the Tau Reconstruction is rerun, you can convert the MiniAOD file to a flat ntuple. These flat ntuples can then be used to plot and calculate various quantities. 
 
