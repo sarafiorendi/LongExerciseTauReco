@@ -6,9 +6,9 @@ source /cvmfs/grid.cern.ch/emi3ui-latest/etc/profile.d/setup-ui-example.sh
 export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch
 source $VO_CMS_SW_DIR/cmsset_default.sh
 
-export SCRAM_ARCH=slc7_amd64_gcc700
-cmsrel CMSSW_10_6_1
-cd CMSSW_10_6_1/src
+export SCRAM_ARCH=slc7_amd64_gcc820
+cmsrel CMSSW_10_2_26
+cd CMSSW_10_2_26/src
 cmsenv
 
 # set up cmssw git repo and check out tau reco package
@@ -22,7 +22,7 @@ scram b -j 8
 cd RecoTauTag/RecoTau/test/
 
 # get code examples
-git clone https://github.com/cms-physics-object-school/LongExerciseTauReco
+git clone git@github.com:sarafiorendi/LongExerciseTauReco.git
 
 scp -r lxplus.cern.ch:/afs/cern.ch/work/j/jbechtel/public/CMSPOS_2019/TauRECO .
 
