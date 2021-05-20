@@ -8,17 +8,22 @@ import sys
 import argparse
 
 parser = argparse.ArgumentParser(description="Plot quantities from ntuples")
-parser.add_argument("--file",
-		choices=['ZTT','QCD'],
-		required=True,
-		help='Specify the sample you want to use for plotting')
+## define the arguments that have to be(required = True) or can be (required = False) 
+## passed to the script when calling it from the command line
+parser.add_argument("--file",                ## name 
+		    choices=['ZTT','QCD'],   ## possible values you can choose from
+		    required=True,           ## mandatory to pass this argument or not 
+		    help='Specify the sample you want to use for plotting')  ## description to be printed out if you call plotting.py --help
 args = parser.parse_args()
 sample = args.file
 
 
 # open the input file and get the tree 
+## {} will be substituted by what is inside format():
+## in this case "jet" or "gentau" depending on the value of the "sample" variable
 infile = ROOT.TFile.Open('tau_{}_tuple_{}.root'.format("jet" if sample=="QCD" else "gentau", sample), 'read')
 infile.cd()
+## get the ntuple inside the file
 tree = infile.Get('tree')
 
 # define the histogram(s)
@@ -51,6 +56,7 @@ tree.Draw('tau_gen_vis_pt >> den', 'tau_gen_vis_pt>18 & abs(tau_gen_vis_eta)<2.4
 tree.Draw('tau_gen_vis_pt >> num', 'tau_gen_vis_pt>18 & abs(tau_gen_vis_eta)<2.4 & tau_reco_pt>0')
 c = ROOT.TCanvas("c","c")
 c.cd()
+## https://root.cern.ch/doc/master/classTEfficiency.html
 eff = ROOT.TEfficiency(histo_num, histo_den)
 eff.SetTitle(';generator-level #tau p_{T}^{vis} [GeV]; reconstruction efficiency')
 eff.SetMarkerStyle(8)
