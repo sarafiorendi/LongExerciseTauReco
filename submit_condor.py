@@ -37,7 +37,12 @@ sample_dict = {
   'SMS_mlsp50'  : '/SMS-TStauStau_ctau-0p01to10_mLSP-50to100_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-GridpackScan_102X_upgrade2018_realistic_v15-v1/MINIAODSIM',
   'HNL_M_10'    : '/HeavyNeutrino_trilepton_M-10_V-0_00108_tau_massiveAndCKM_LO/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM',
   'HNL_M_5'     : '/HeavyNeutrino_trilepton_M-5_V-0_00639_tau_massiveAndCKM_LO/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM', 
-  'gmsb'        : '/Staus_M_500_0p01mm_13TeV_2018MC/jalimena-Reco-2f1667a4ab974bdf4cb2916f291c3603/USER' 
+  'gmsb'        : '/Staus_M_500_0p01mm_13TeV_2018MC/jalimena-Reco-2f1667a4ab974bdf4cb2916f291c3603/USER' ,
+  'gmsb_10'     : '/Staus_M_500_10mm_14TeV_Run3MC/fiorendi-MINIAODSIM-464e2202a5c20972daf8cec7268bfc28/USER' ,
+  'gmsb_10_run2': '/Staus_M_500_10mm_14TeV_Run3MC/fiorendi-MINIAODSIM-464e2202a5c20972daf8cec7268bfc28/USER' ,
+  'DY'          : '/DYToLL_M-50_TuneCP5_14TeV-pythia8/Run3Winter21DRMiniAOD-FlatPU30to80FEVT_112X_mcRun3_2021_realistic_v16-v2/MINIAODSIM' ,
+  'DYeos'       : '/DYToLL_M-50_TuneCP5_14TeV-pythia8/Run3Winter21DRMiniAOD-FlatPU30to80FEVT_112X_mcRun3_2021_realistic_v16-v2/MINIAODSIM' ,
+  'DYUL'        : '/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/MINIAODSIM' ,
 }
 
 ds_name = sample_dict[args.sample]
@@ -56,10 +61,12 @@ if not os.path.isfile(filelistname):
             process.wait()
             
             pdb.set_trace()
-        
-njobs=len(open(filelistname, 'r').readlines())
-os.system('cp {fname} {base_out}'.format(fname=filelistname, base_out=base_out))
 
+njobs = args.njobs
+if args.njobs == -1:         
+    njobs = len(open(filelistname, 'r').readlines())
+
+os.system('cp {fname} {base_out}'.format(fname=filelistname, base_out=base_out))
 print 'n jobs to be submitted: ', njobs 
 
 bname = os.path.realpath('%s/scripts/script_condor.sh'%base_out)
@@ -78,8 +85,11 @@ setenv PYTHONPATH `which python`
 setenv PYTHONHOME `scram tool info python | grep PYTHON_BASE | sed 's/PYTHON_BASE=//'`
 popd
 
-echo "python {script_loc} --sample {thesample} --file $1 "
-time python {script_loc}  --sample {thesample} --file $1 
+setenv X509_USER_PROXY $1
+voms-proxy-info -all
+voms-proxy-info -all -file $1
+echo "python {script_loc} --sample {thesample} --file $2 "
+time python {script_loc}  --sample {thesample} --file $2 
 mv tau*.root {full_eos_out} 
 '''
 .format(script_loc   = script_loc, 
@@ -88,6 +98,7 @@ mv tau*.root {full_eos_out}
         cwd          = getcwd
         )
 )
+# setenv XRD_NETWORKSTACK IPv4
 subprocess.call(['chmod', '+x', bname])
     
 
@@ -96,6 +107,7 @@ with open('%s/condor_sub.cfg'%base_out, 'w') as cfg:
     cfg.write('''Universe = vanilla
 Executable = {bname}
 use_x509userproxy = True 
+Proxy_path = /afs/cern.ch/user/f/fiorendi/x509up_u58808
 transfer_input_files = {filelistname}
 Should_Transfer_Files = YES
 WhenToTransferOutput = ON_EXIT
@@ -104,7 +116,7 @@ requirements = (OpSysAndVer =?= "CentOS7")
 Log    = {base_out}/outCondor/condor_job_$(Process).log
 Output = {base_out}/outCondor/condor_job_$(Process).out
 Error  = {base_out}/outCondor/condor_job_$(Process).err
-Arguments = $(Process) {sample} 
+Arguments = $(Proxy_path) $(Process) {sample} 
 +JobFlavour = "longlunch"
 Queue {njobs}'''.format( bname = bname, 
                     base_out = base_out, 
@@ -115,9 +127,9 @@ Queue {njobs}'''.format( bname = bname,
                     njobs = njobs )
 )    
     # submit to the queue
-    print('condor_submit {base_out}/condor_sub.cfg'.format(base_out=base_out))
-    if not args.test:
-        os.system("condor_submit {base_out}/condor_sub.cfg".format(base_out=base_out))   
+print('condor_submit {base_out}/condor_sub.cfg'.format(base_out=base_out))
+if not args.test:
+    os.system("condor_submit {base_out}/condor_sub.cfg".format(base_out=base_out))   
 
 
 # +JobFlavour = "{flavour}"
