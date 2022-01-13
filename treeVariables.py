@@ -14,6 +14,9 @@ branches = [
     'tau_reco_phi',
     'tau_reco_charge',
     'tau_reco_decaymode',
+    'tau_reco_ip3d'    ,
+    'tau_reco_dxy'     ,
+    'tau_reco_pixel'   ,
     'tau_l1_pt',
     'tau_l1_eta',
     'tau_l1_phi',
@@ -23,6 +26,11 @@ branches = [
     'jet_l1_eta',
     'jet_l1_phi',
     'jet_l1_charge',
+    'tau_com_pt'   ,  
+    'tau_com_eta'   , 
+    'tau_com_phi'    ,
+    'tau_com_charge' ,
+    'tau_upcom_pt'   ,  
     'tau_gen_pt',
     'tau_gen_eta',
     'tau_gen_phi',
@@ -48,4 +56,5 @@ branches = [
     'PV_x',
     'PV_y',
     'PV_z',
+
 ]

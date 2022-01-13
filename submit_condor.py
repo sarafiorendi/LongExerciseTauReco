@@ -43,14 +43,44 @@ sample_dict = {
   'DY'          : '/DYToLL_M-50_TuneCP5_14TeV-pythia8/Run3Winter21DRMiniAOD-FlatPU30to80FEVT_112X_mcRun3_2021_realistic_v16-v2/MINIAODSIM' ,
   'DYeos'       : '/DYToLL_M-50_TuneCP5_14TeV-pythia8/Run3Winter21DRMiniAOD-FlatPU30to80FEVT_112X_mcRun3_2021_realistic_v16-v2/MINIAODSIM' ,
   'DYUL'        : '/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/MINIAODSIM' ,
+  'gmsb_fnal'   : '/Staus_M_500_10mm_14TeV_Run3MC/fiorendi-MINIAODSIM-464e2202a5c20972daf8cec7268bfc28/USER' , ### fake path
+  'gmsb_10_ptk_eos'              : '/Staus_M_500_10mm_14TeV_Run3MC/fiorendi-MINIAODSIM-464e2202a5c20972daf8cec7268bfc28/USER' , ### fake path
+  'DY_ptk_eos'                   : '/Staus_M_500_10mm_14TeV_Run3MC/fiorendi-MINIAODSIM-464e2202a5c20972daf8cec7268bfc28/USER' , ### fake path
+  'DY_raw_run2_fnal'             : '/Staus_M_500_10mm_14TeV_Run3MC/fiorendi-MINIAODSIM-464e2202a5c20972daf8cec7268bfc28/USER' , ### fake path
+  'DY_raw_patatrack_fnal'        : '/Staus_M_500_10mm_14TeV_Run3MC/fiorendi-MINIAODSIM-464e2202a5c20972daf8cec7268bfc28/USER' , ### fake path
+  'DY_raw_patatrack_allvtx_fnal' : '/Staus_M_500_10mm_14TeV_Run3MC/fiorendi-MINIAODSIM-464e2202a5c20972daf8cec7268bfc28/USER' , ### fake path
+  'taugun_run2_fnal'             : '/Staus_M_500_10mm_14TeV_Run3MC/fiorendi-MINIAODSIM-464e2202a5c20972daf8cec7268bfc28/USER' , ### fake path
+  'taugun_patatrack_fnal'        : '/Staus_M_500_10mm_14TeV_Run3MC/fiorendi-MINIAODSIM-464e2202a5c20972daf8cec7268bfc28/USER' , ### fake path
+  'taugun_patatrack_allVtx_fnal' : '/Staus_M_500_10mm_14TeV_Run3MC/fiorendi-MINIAODSIM-464e2202a5c20972daf8cec7268bfc28/USER' , ### fake path
+  'taugun_run2_fnal'             : '/Staus_M_500_10mm_14TeV_Run3MC/fiorendi-MINIAODSIM-464e2202a5c20972daf8cec7268bfc28/USER' , ### fake path
+  'gmsb_100mm_patatrack_allvtx_fnal' : '/Staus_M_500_10mm_14TeV_Run3MC/fiorendi-MINIAODSIM-464e2202a5c20972daf8cec7268bfc28/USER' , ### fake path
+  'gmsb_10mm_patatrack_allvtx_fnal'  : '/Staus_M_500_10mm_14TeV_Run3MC/fiorendi-MINIAODSIM-464e2202a5c20972daf8cec7268bfc28/USER' , ### fake path
+  'gmsb_10mm_patatrack_fnal'  : '/Staus_M_500_10mm_14TeV_Run3MC/fiorendi-MINIAODSIM-464e2202a5c20972daf8cec7268bfc28/USER' , ### fake path
+  'gmsb_100mm_patatrack_fnal'  : '/Staus_M_500_10mm_14TeV_Run3MC/fiorendi-MINIAODSIM-464e2202a5c20972daf8cec7268bfc28/USER' , ### fake path
+  'gmsb_10mm_run2_fnal'  : '/Staus_M_500_10mm_14TeV_Run3MC/fiorendi-MINIAODSIM-464e2202a5c20972daf8cec7268bfc28/USER' , ### fake path
+  'gmsb_100mm_run2_fnal'  : '/Staus_M_500_10mm_14TeV_Run3MC/fiorendi-MINIAODSIM-464e2202a5c20972daf8cec7268bfc28/USER' , ### fake path
+  'gmsb_10mm_patatrack_allvtx_offline_fnal'  : '/Staus_M_500_10mm_14TeV_Run3MC/fiorendi-MINIAODSIM-464e2202a5c20972daf8cec7268bfc28/USER' , ### fake path
+
+  'gmsb_10mm_ptt_it4_fnal'       : '/Staus_M_500_10mm_14TeV_Run3MC/fiorendi-MINIAODSIM-464e2202a5c20972daf8cec7268bfc28/USER' , ### fake path
+  'gmsb_10mm_ptt_it4allVtx_fnal' : '/Staus_M_500_10mm_14TeV_Run3MC/fiorendi-MINIAODSIM-464e2202a5c20972daf8cec7268bfc28/USER' , ### fake path
+  'gmsb_10mm_pttallVtx_it4_fnal' : '/Staus_M_500_10mm_14TeV_Run3MC/fiorendi-MINIAODSIM-464e2202a5c20972daf8cec7268bfc28/USER' , ### fake path
+  'gmsb_10mm_pttallVtx_it4allVtx_fnal' : '/Staus_M_500_10mm_14TeV_Run3MC/fiorendi-MINIAODSIM-464e2202a5c20972daf8cec7268bfc28/USER' , ### fake path
+  'gmsb_100mm_ptt_it4_fnal'            : '/Staus_M_500_10mm_14TeV_Run3MC/fiorendi-MINIAODSIM-464e2202a5c20972daf8cec7268bfc28/USER' , ### fake path
+  'gmsb_100mm_ptt_it4allVtx_fnal'      : '/Staus_M_500_10mm_14TeV_Run3MC/fiorendi-MINIAODSIM-464e2202a5c20972daf8cec7268bfc28/USER' , ### fake path
+  'gmsb_100mm_pttallVtx_it4_fnal'      : '/Staus_M_500_10mm_14TeV_Run3MC/fiorendi-MINIAODSIM-464e2202a5c20972daf8cec7268bfc28/USER' , ### fake path
+  'gmsb_100mm_pttallVtx_it4allVtx_fnal': '/Staus_M_500_10mm_14TeV_Run3MC/fiorendi-MINIAODSIM-464e2202a5c20972daf8cec7268bfc28/USER' , ### fake path
+  'gmsb_100mm_ptt_it4_maxLostLay_fnal': '/Staus_M_500_10mm_14TeV_Run3MC/fiorendi-MINIAODSIM-464e2202a5c20972daf8cec7268bfc28/USER' , ### fake path
+  'gmsb_100mm_ptt_it4_minNVtx_fnal': '/Staus_M_500_10mm_14TeV_Run3MC/fiorendi-MINIAODSIM-464e2202a5c20972daf8cec7268bfc28/USER' , ### fake path
+  'gmsb_100mm_ptt_it4_l1seeding': '/Staus_M_500_10mm_14TeV_Run3MC/fiorendi-MINIAODSIM-464e2202a5c20972daf8cec7268bfc28/USER' , ### fake path
+  'gmsb_100mm_ptt_it4_cutstomit4': '/Staus_M_500_10mm_14TeV_Run3MC/fiorendi-MINIAODSIM-464e2202a5c20972daf8cec7268bfc28/USER' , ### fake path
 }
 
-ds_name = sample_dict[args.sample]
 
 # njobs = 0
 filelistname = '%s_filelist.txt'%args.sample
 
 if not os.path.isfile(filelistname):
+    ds_name = sample_dict[args.sample]
     with open(filelistname, 'w') as f:
         if 'gmsb' not in args.sample:
             process = subprocess.Popen(['dasgoclient', '--query=file dataset=%s'%ds_name, '--format=list'], stdout=f)
@@ -90,7 +120,7 @@ voms-proxy-info -all
 voms-proxy-info -all -file $1
 echo "python {script_loc} --sample {thesample} --file $2 "
 time python {script_loc}  --sample {thesample} --file $2 
-mv tau*.root {full_eos_out} 
+mv *tau*tuple*.root {full_eos_out} 
 '''
 .format(script_loc   = script_loc, 
         full_eos_out = full_eos_out,
