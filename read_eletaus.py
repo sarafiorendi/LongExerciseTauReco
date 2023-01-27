@@ -71,14 +71,14 @@ if 'fnal' in sample:
 if 'eos' in sample:
     redirector = ''
 
-# events = Events(redirector+infile.strip())
-events = Events([
+events = Events(redirector+infile.strip())
+# events = Events([
 #                  '/afs/cern.ch/work/f/fiorendi/private/displacedTaus/hlt/CMSSW_12_3_0_pre6/src/HLTrigger/Configuration/test/outputHLT.root'
 #                  '/eos/cms/store/group/phys_bphys/fiorendi/p5prime/displTaus/Staus_M_200_100mm_14TeV_Run3MC_Summer21/crab_ntuples_mutau_singlephoton_v18_gmsb_M200_100mm_summer21/220627_083854/0000/outputHLT_111.root',
-                 '/afs/cern.ch/work/f/fiorendi/private/displacedTaus/hlt/CMSSW_12_4_0/src/HLTrigger/Configuration/test/outputHLT.root'
-                ])
+#                  '/eos/cms/store/group/phys_bphys/fiorendi/p5prime/displTaus/Staus_M_200_100mm_14TeV_Run3MC_Summer21/crab_ntuples_mutau_singlephoton_v18_gmsb_M200_100mm_summer21/220628_134709/0000/outputHLT_69.root'
+#                 ])
 
-print('using a local file!!!!!!!!!!!!!!!!!!!!!')
+# print('using a local file!!!!!!!!!!!!!!!!!!!!!')
 
 print(infile)
 maxevents = -1 # max events to process
@@ -135,7 +135,14 @@ handle_iso_displ    = Handle('reco::PFTauDiscriminator')
 ## HLT filters
 handle_hlt_filter     = Handle('trigger::TriggerFilterObjectWithRefs') 
 handle_l1ele_filter   = Handle('trigger::TriggerFilterObjectWithRefs') 
-handle_l3ele_filter   = Handle('trigger::TriggerFilterObjectWithRefs') 
+handle_l3ele_filter1   = Handle('trigger::TriggerFilterObjectWithRefs') 
+handle_l3ele_filter2   = Handle('trigger::TriggerFilterObjectWithRefs') 
+handle_l3ele_filter3   = Handle('trigger::TriggerFilterObjectWithRefs') 
+handle_l3ele_filter4   = Handle('trigger::TriggerFilterObjectWithRefs') 
+handle_l3ele_filter5   = Handle('trigger::TriggerFilterObjectWithRefs') 
+handle_l3ele_filter6   = Handle('trigger::TriggerFilterObjectWithRefs') 
+handle_l3ele_filter7   = Handle('trigger::TriggerFilterObjectWithRefs') 
+handle_l3ele_filter8   = Handle('trigger::TriggerFilterObjectWithRefs') 
 handle_isoele_filter  = Handle('trigger::TriggerFilterObjectWithRefs') 
 
 # handle_glbd_filter   = Handle('trigger::TriggerFilterObjectWithRefs') 
@@ -162,9 +169,15 @@ handles['hlt_iso_displ']  = [('hltHpsDisplPFTauMediumAbsOrRelChargedIsolationDis
 ## HLT filters
 handles['hlt_filter']  = [('hltHpsDisplacedMuMediumChargedIsoDisplPFTau20TrackPt1L1HLTMatchedGlob', '', 'MYHLT'), handle_hlt_filter, False]
 
-handles['hlt_l1ele_filter']  = [('hltL1sSingleEGNonIsoOrWithJetAndTauNoPS', '', 'MYHLT'), handle_l1ele_filter, False]
-handles['hlt_eg_filter']  = [('hltEGL1SingleEGNonIsoOrWithJetAndTauNoPSFilter', '', 'MYHLT'), handle_l3ele_filter, False]
-handles['hlt_isoele_filter'] = [('hltL3crIsoL1sSingleMu22L1f0L2f10QL3f24QL3trkIsoFiltered0p07', '', 'MYHLT'), handle_isoele_filter, False]
+handles['hlt_l1ele_filter']   = [('hltL1sSingleEGNonIsoOrWithJetAndTauNoPS'       , '', 'MYHLT'), handle_l1ele_filter, False]
+handles['hlt_eg_filter1']     = [('hltEG30EtFilter'                               , '', 'MYHLT'), handle_l3ele_filter1, False]
+handles['hlt_eg_filter2']     = [('hltEG30HEFilter'                               , '', 'MYHLT'), handle_l3ele_filter2, False]
+handles['hlt_eg_filter3']     = [('hltEG30R9Id90CaloIdLIsoLR9IdFilter'            , '', 'MYHLT'), handle_l3ele_filter3, False]
+handles['hlt_eg_filter4']     = [('hltEG30R9Id90CaloIdLIsoLClusterShapeFilter'    , '', 'MYHLT'), handle_l3ele_filter4, False]
+handles['hlt_eg_filter5']     = [('hltEG30R9Id90CaloIdLIsoLEcalPFClusterIsoFilter', '', 'MYHLT'), handle_l3ele_filter5, False]
+handles['hlt_eg_filter6']     = [('hltEG30R9Id90CaloIdLIsoLHcalPFClusterIsoFilter', '', 'MYHLT'), handle_l3ele_filter6, False]
+handles['hlt_eg_filter7']     = [('hltEG30R9Id90CaloIdLIsoLHollowTrackIsoFilter'  , '', 'MYHLT'), handle_l3ele_filter7, False]
+handles['hlt_eg_filter8']     = [('hltEG30R9Id90CaloIdLIsoLDisplacedIdFilter'     , '', 'MYHLT'), handle_l3ele_filter8, False]
 # handles['hlt_glbdisp_filter'] = [('hltL3fSingleMuL1f0L2NVf7L3GlbDispl10', '', 'MYHLT'), handle_glbd_filter, False]
 
 ## offline objects
@@ -308,9 +321,19 @@ for i, ev in enumerate(events):
         ele_filter_product = ev.hlt_l1ele_filter.l1tegammaRefs()
         gen_ele_taus = findMatchToGen(gen_ele_taus, ele_filter_product, 'l1_ele')
 
-    if handles['hlt_eg_filter'][2]:  
-        ele_filter_product = ev.hlt_eg_filter.electronRefs()
-        gen_ele_taus = findMatchToGen(gen_ele_taus, ele_filter_product, 'egamma')
+    if handles['hlt_eg_filter1'][2]:  
+        print (len(ev.hlt_eg_filter1.electronRefs()),  len(ev.hlt_eg_filter1.photonRefs()))
+        ele_filter_product = ev.hlt_eg_filter1.photonRefs()
+        gen_ele_taus = findMatchToGen(gen_ele_taus, ele_filter_product, 'egamma1')
+
+    for ifilter in range(1,9):
+        if handles['hlt_eg_filter%s'%ifilter][2]:  
+#           print (len(ev.hlt_eg_filter1.electronRefs()),  len(ev.hlt_eg_filter1.photonRefs()))
+#           pdb.set_trace()
+          ele_filter_product = getattr(ev, 'hlt_eg_filter%s'%ifilter).photonRefs()
+          gen_ele_taus = findMatchToGen(gen_ele_taus, ele_filter_product, 'egamma%s'%ifilter)
+
+
 # 
 #     if handles['hlt_isoele_filter'][2]:  
 #         ele_filter_product = ev.hlt_isoele_filter.eleonRefs()
@@ -357,11 +380,53 @@ for i, ev in enumerate(events):
             tofill_gen['l1_ele_phi'      ] = gg.l1_ele.phi()
             tofill_gen['l1_ele_charge'   ] = gg.l1_ele.charge()
 
-        if hasattr(gg, 'egamma') and gg.egamma:
-            tofill_gen['hlt_ele_pt'       ] = gg.egamma.pt()
-            tofill_gen['hlt_ele_eta'      ] = gg.egamma.eta()
-            tofill_gen['hlt_ele_phi'      ] = gg.egamma.phi()
-            tofill_gen['hlt_ele_charge'   ] = gg.egamma.charge()
+        if hasattr(gg, 'egamma1') and gg.egamma1:
+            tofill_gen['filter1_ele_pt'       ] = gg.egamma1.pt()
+            tofill_gen['filter1_ele_eta'      ] = gg.egamma1.eta()
+            tofill_gen['filter1_ele_phi'      ] = gg.egamma1.phi()
+            tofill_gen['filter1_ele_charge'   ] = gg.egamma1.charge()
+
+        if hasattr(gg, 'egamma2') and gg.egamma2:
+            tofill_gen['filter2_ele_pt'       ] = gg.egamma2.pt()
+            tofill_gen['filter2_ele_eta'      ] = gg.egamma2.eta()
+            tofill_gen['filter2_ele_phi'      ] = gg.egamma2.phi()
+            tofill_gen['filter2_ele_charge'   ] = gg.egamma2.charge()
+
+        if hasattr(gg, 'egamma3') and gg.egamma3:
+            tofill_gen['filter3_ele_pt'       ] = gg.egamma3.pt()
+            tofill_gen['filter3_ele_eta'      ] = gg.egamma3.eta()
+            tofill_gen['filter3_ele_phi'      ] = gg.egamma3.phi()
+            tofill_gen['filter3_ele_charge'   ] = gg.egamma3.charge()
+
+        if hasattr(gg, 'egamma4') and gg.egamma4:
+            tofill_gen['filter4_ele_pt'       ] = gg.egamma4.pt()
+            tofill_gen['filter4_ele_eta'      ] = gg.egamma4.eta()
+            tofill_gen['filter4_ele_phi'      ] = gg.egamma4.phi()
+            tofill_gen['filter4_ele_charge'   ] = gg.egamma4.charge()
+
+        if hasattr(gg, 'egamma5') and gg.egamma5:
+            tofill_gen['filter5_ele_pt'       ] = gg.egamma5.pt()
+            tofill_gen['filter5_ele_eta'      ] = gg.egamma5.eta()
+            tofill_gen['filter5_ele_phi'      ] = gg.egamma5.phi()
+            tofill_gen['filter5_ele_charge'   ] = gg.egamma5.charge()
+
+        if hasattr(gg, 'egamma6') and gg.egamma6:
+            tofill_gen['filter6_ele_pt'       ] = gg.egamma6.pt()
+            tofill_gen['filter6_ele_eta'      ] = gg.egamma6.eta()
+            tofill_gen['filter6_ele_phi'      ] = gg.egamma6.phi()
+            tofill_gen['filter6_ele_charge'   ] = gg.egamma6.charge()
+
+        if hasattr(gg, 'egamma7') and gg.egamma7:
+            tofill_gen['filter7_ele_pt'       ] = gg.egamma7.pt()
+            tofill_gen['filter7_ele_eta'      ] = gg.egamma7.eta()
+            tofill_gen['filter7_ele_phi'      ] = gg.egamma7.phi()
+            tofill_gen['filter7_ele_charge'   ] = gg.egamma7.charge()
+
+        if hasattr(gg, 'egamma8') and gg.egamma8:
+            tofill_gen['filter8_ele_pt'       ] = gg.egamma8.pt()
+            tofill_gen['filter8_ele_eta'      ] = gg.egamma8.eta()
+            tofill_gen['filter8_ele_phi'      ] = gg.egamma8.phi()
+            tofill_gen['filter8_ele_charge'   ] = gg.egamma8.charge()
 
 #         if hasattr(gg, 'iso_ele') and gg.iso_ele:
 #             tofill_gen['filter_ele_pt'       ] = gg.iso_ele.pt()
