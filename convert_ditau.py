@@ -7,7 +7,8 @@ from array import array
 from math  import sqrt 
 import uproot
 
-sig_list = [ 'ntuples/ditau_gmsb_200Gev_100mm_forDiTau_addhltinfo.root:tree']
+# sig_list = [ 'tau_ditau_tuple_gmsb_m100_ctau100mm_addL2isoVals_eos_2_withDispl_compareToPromptTrigger.root:tree']
+sig_list = [ 'tau_ditau_tuple_gmsb_m100_ctau100mm_norehlt_summer22_fnal_1_withDispl_newsample.root:tree']
 
 sig_uproot = uproot.concatenate(sig_list,  library="np")
 
@@ -53,7 +54,8 @@ tokeep = [
 'PV_x',
 'PV_y',
 'PV_z',
-'pass_old_hlt',
+'pass_met_hlt',
+'pass_lep_hlt',
 'pass_PFMET120_PFMHT120_IDTight', 
 'pass_PFMET130_PFMHT130_IDTight', 
 'pass_PFMET140_PFMHT140_IDTight', 
@@ -62,6 +64,7 @@ tokeep = [
 'pass_PFMETNoMu130_PFMHTNoMu130_IDTight', 
 'pass_PFMETNoMu140_PFMHTNoMu140_IDTight', 
 'pass_DoubleMediumChargedIsoPFTauHPS35_Trk1_eta2p1_Reg', 
+'pass_DoubleMediumChargedIsoDisplacedPFTauHPS32_Trk1_eta2p1',
 'pass_MediumChargedIsoPFTau50_Trk30_eta2p1_1pr_MET100', 
 'pass_MediumChargedIsoPFTau50_Trk30_eta2p1_1pr_MET110', 
 'pass_MediumChargedIsoPFTau50_Trk30_eta2p1_1pr_MET120', 

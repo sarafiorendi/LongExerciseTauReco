@@ -57,7 +57,7 @@ if not os.path.isfile(filelistname):
             process = subprocess.Popen(['dasgoclient', '--query=file dataset=%s'%ds_name, '--format=list'], stdout=f)
             process.wait()
         else:
-            print 'gmsb -> does not work'
+            print('gmsb -> does not work')
             process = subprocess.Popen(['dasgoclient', '--query="file dataset=%s'%ds_name, '--format=list', 'instance=prod/phys03"'], stdout=f)
             process.wait()
             
@@ -68,7 +68,7 @@ if args.njobs == -1:
     njobs = len(open(filelistname, 'r').readlines())
 
 os.system('cp {fname} {base_out}'.format(fname=filelistname, base_out=base_out))
-print 'n jobs to be submitted: ', njobs 
+print('n jobs to be submitted: ', njobs) 
 
 bname = os.path.realpath('%s/scripts/script_condor.sh'%base_out)
 getcwd = os.getcwd()
@@ -82,8 +82,8 @@ with open(bname, 'w') as batch:
 source  /cvmfs/cms.cern.ch/cmsset_default.csh
 pushd {cwd}
 eval `scram runtime -csh`
-setenv PYTHONPATH `which python`
-setenv PYTHONHOME `scram tool info python | grep PYTHON_BASE | sed 's/PYTHON_BASE=//'`
+setenv PYTHONPATH `which python3`
+setenv PYTHONHOME `scram tool info python3 | grep PYTHON_BASE | sed 's/PYTHON_BASE=//'`
 popd
 
 setenv X509_USER_PROXY $1
@@ -128,7 +128,7 @@ Queue {njobs}'''.format( bname = bname,
                     njobs = njobs )
 )    
     # submit to the queue
-print('condor_submit {base_out}/condor_sub.cfg'.format(base_out=base_out))
+print(('condor_submit {base_out}/condor_sub.cfg'.format(base_out=base_out)))
 if not args.test:
     os.system("condor_submit {base_out}/condor_sub.cfg".format(base_out=base_out))   
 
